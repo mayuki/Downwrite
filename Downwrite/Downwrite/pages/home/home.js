@@ -41,6 +41,7 @@
             this._previewPaneNode.addEventListener('click', this._onPreviewPaneClick.bind(this));
 
             window.addEventListener('resize', this._onResized.bind(this));
+            window.addEventListener('scroll', this._onScrolled.bind(this));
 
             this._fileListItemTemplate = element.querySelector('#template-filelist-item').winControl;
             if (window.intellisense) this._fileListItemTemplate = new WinJS.Binding.Template();
@@ -60,6 +61,7 @@
 
         unload: function () {
             window.removeEventListener('resize', this._onResized.bind(this));
+            window.removeEventListener('scroll', this._onScrolled.bind(this));
         },
 
         prepareAppBar: function () {
@@ -245,11 +247,25 @@
         },
 
         // -- events
+        _scrolledAnimationPromise: WinJS.Promise.wrap(),
+        _onScrolled: function () {
+            this._scrolledAnimationPromise.cancel();
+
+            this._scrolledAnimationPromise = WinJS.Promise.timeout(500).then(function () {
+                var statusBar = this._fragmentNode.querySelector('#statusbar');
+                var keyboardHeight = window.outerHeight - window.innerHeight;
+                if (keyboardHeight > 0) {
+                    statusBar.style.bottom = (keyboardHeight - window.pageYOffset) + 'px';
+                } else {
+                    statusBar.style.bottom = '0px';
+                }
+            }.bind(this));
+        },
         _onResized: function() {
             var statusBar = this._fragmentNode.querySelector('#statusbar');
             var keyboardHeight = window.outerHeight - window.innerHeight;
             if (keyboardHeight > 0) {
-                statusBar.style.bottom = keyboardHeight + 'px';
+                statusBar.style.bottom = (keyboardHeight - window.pageYOffset) + 'px';
             } else {
                 statusBar.style.bottom = '0px';
             }

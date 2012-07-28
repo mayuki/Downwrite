@@ -44,7 +44,7 @@
     padding: 20px;
 }
 
-.homepage #statusbar {
+#statusbar {
     position: fixed;
     bottom: 0px;
     left: 20px;
@@ -58,7 +58,7 @@
     -ms-transition-duration: 0.1s;
     -ms-transition-property: bottom;
 }
-.homepage #statusbar li {
+ #statusbar li {
     list-style-type: none;
     float: left;
     margin: 0;
@@ -76,7 +76,7 @@
                   1px  0px 5px #fff,
                   1px  1px 5px #fff;
 }
-.homepage #statusbar li.is-changed {
+#statusbar li.is-changed {
     display: none;
 }
 
