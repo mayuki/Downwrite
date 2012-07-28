@@ -29,6 +29,10 @@
                     return nav.navigate(Application.navigator.home);
                 }
             }));
+        } else if (args.detail.kind === activation.ActivationKind.file) {
+            args.detail.files.forEach(function (file) {
+                Downwrite.MainPage.openFile(file);
+            });
         }
     });
 

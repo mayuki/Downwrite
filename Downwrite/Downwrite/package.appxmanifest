@@ -19,6 +19,17 @@
         <DefaultTile ShowName="allLogos" />
         <SplashScreen Image="images\splashscreen.png" />
       </VisualElements>
+      <Extensions>
+        <Extension Category="windows.fileTypeAssociation">
+          <FileTypeAssociation Name="markdown">
+            <DisplayName>Markdown Document</DisplayName>
+            <SupportedFileTypes>
+              <FileType>.md</FileType>
+              <FileType>.markdown</FileType>
+            </SupportedFileTypes>
+          </FileTypeAssociation>
+        </Extension>
+      </Extensions>
     </Application>
   </Applications>
   <Capabilities>

@@ -42,6 +42,8 @@
             this._editingContentNode.value = '';
 
             this.togglePreview(false);
+
+            Downwrite.MainPage = this;
         },
 
         prepareAppBar: function () {
@@ -65,12 +67,6 @@
             }.bind(this);
         },
 
-        showFile: function (file) {
-            this._currentFile = file;
-            this._editingContentNode.value = file.content;
-            this.updatePreview();
-            this.updateStatusBar();
-        },
 
         togglePreview: function (isVisible) {
             if (isVisible == undefined) isVisible = !this._isPreviewVisible;
@@ -212,6 +208,24 @@
         },
         updatePreview: function () {
             this._previewContentNode.innerHTML = this._currentFile.toHTML();
+        },
+
+        showFile: function (file) {
+            this._currentFile = file;
+            this._editingContentNode.value = file.content;
+            this.updatePreview();
+            this.updateStatusBar();
+        },
+
+        openFile: function (file) {
+            if (this._currentFile.isNew && !this._currentFile.isUnsaved) {
+                // unchanged & new file
+                Downwrite.closeFile(this._currentFile);
+            }
+
+            return Downwrite.openFile(file).then(function (downwriteFile) {
+                this.showFile(downwriteFile);
+            }.bind(this));
         },
 
         undo: function () {

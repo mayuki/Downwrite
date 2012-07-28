@@ -144,6 +144,8 @@
 
 
     WinJS.Namespace.define("Downwrite", {
+        MainPage: null,
+
         File: Downwrite_File,
         OpenedFiles: [],
 
