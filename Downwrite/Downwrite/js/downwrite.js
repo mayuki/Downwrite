@@ -24,6 +24,10 @@
         this.lastChangedAt = new Date();
         this.originalContent = this._content;
 
+        this.bind('file', function () {
+            this.notify('name', this.name);
+        }.bind(this));
+
         this.updateCounts();
     }, {
         updateCounts: function () {
@@ -49,6 +53,11 @@
                     this.updateCounts();
                 }
             }
+        },
+
+        file: {
+            get: function () { return this._file; },
+            set: function (value) { var orig = this._file; this._file = value; this.notify('file', value, orig); }
         },
         
         name: {
