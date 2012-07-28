@@ -30,9 +30,27 @@
                 }
             }));
         } else if (args.detail.kind === activation.ActivationKind.file) {
-            args.detail.files.forEach(function (file) {
-                Downwrite.MainPage.openFile(file);
+            var nextPromise;
+            if (!Downwrite.MainPage) {
+                nextPromise = WinJS.UI.processAll().then(function () {
+                    if (nav.location) {
+                        nav.history.current.initialPlaceholder = true;
+                        return nav.navigate(nav.location, nav.state);
+                    } else {
+                        return nav.navigate(Application.navigator.home);
+                    }
+                });
+            } else {
+                nextPromise = WinJS.Promise.wrap();
+            }
+
+            nextPromise.then(function () {
+                args.detail.files.forEach(function (file) {
+                    Downwrite.MainPage.openFile(file);
+                });
             });
+
+            args.setPromise(nextPromise);
         }
     });
 
