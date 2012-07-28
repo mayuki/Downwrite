@@ -1,0 +1,109 @@
+﻿/*!
+ * Markdown CSS
+ *
+ * Original
+ * https://github.com/clownfart/Markdown-CSS
+ */
+
+.markdown.default html { font-size: 100%; overflow-y: scroll; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
+
+.markdown.default body{
+color:#444;
+font-family:Georgia, Palatino, 'Palatino Linotype', Times, 'Times New Roman', serif;
+font-size:12px;
+line-height:1.5em;
+padding:1em;
+margin:auto;
+max-width:42em;
+background:#fefefe;
+}
+
+.markdown.default a{ color: #0645ad; text-decoration:none;}
+.markdown.default a:visited{ color: #0b0080; }
+.markdown.default a:hover{ color: #06e; }
+.markdown.default a:active{ color:#faa700; }
+.markdown.default a:focus{ outline: thin dotted; }
+.markdown.default a:hover, .markdown.default a:active{ outline: 0; }
+
+.markdown.default ::-moz-selection{background:rgba(255,255,0,0.3);color:#000}
+.markdown.default ::selection{background:rgba(255,255,0,0.3);color:#000}
+
+.markdown.default a::-moz-selection{background:rgba(255,255,0,0.3);color:#0645ad}
+.markdown.default a::selection{background:rgba(255,255,0,0.3);color:#0645ad}
+
+.markdown.default p{
+margin:1em 0;
+}
+
+.markdown.default img{
+max-width:100%;
+}
+
+.markdown.default h1,.markdown.default h2,.markdown.default h3,.markdown.default h4,.markdown.default h5,.markdown.default h6{
+font-weight:normal;
+color:#111;
+line-height:1em;
+}
+.markdown.default h4,.markdown.default h5,.markdown.default h6{ font-weight: bold; }
+.markdown.default h1{ font-size:2.5em; }
+.markdown.default h2{ font-size:2em; }
+.markdown.default h3{ font-size:1.5em; }
+.markdown.default h4{ font-size:1.2em; }
+.markdown.default h5{ font-size:1em; }
+.markdown.default h6{ font-size:0.9em; }
+
+.markdown.default blockquote{
+color:#666666;
+margin:0;
+padding-left: 3em;
+border-left: 0.5em #EEE solid;
+}
+.markdown.default hr { display: block; height: 2px; border: 0; border-top: 1px solid #aaa;border-bottom: 1px solid #eee; margin: 1em 0; padding: 0; }
+.markdown.default pre, .markdown.default code, .markdown.default kbd, .markdown.default samp { color: #000; font-family: monospace, monospace; _font-family: 'courier new', monospace; font-size: 0.98em; }
+.markdown.default pre { white-space: pre; white-space: pre-wrap; word-wrap: break-word; }
+
+.markdown.default b, .markdown.default strong { font-weight: bold; }
+
+.markdown.default dfn { font-style: italic; }
+
+.markdown.default ins { background: #ff9; color: #000; text-decoration: none; }
+
+.markdown.default mark { background: #ff0; color: #000; font-style: italic; font-weight: bold; }
+
+.markdown.default sub, .markdown.default sup { font-size: 75%; line-height: 0; position: relative; vertical-align: baseline; }
+.markdown.default sup { top: -0.5em; }
+.markdown.default sub { bottom: -0.25em; }
+
+.markdown.default ul, .markdown.default ol { margin: 1em 0; padding: 0 0 0 2em; }
+.markdown.default li p:last-child { margin:0 }
+.markdown.default dd { margin: 0 0 0 2em; }
+
+.markdown.default img { border: 0; -ms-interpolation-mode: bicubic; vertical-align: middle; }
+
+.markdown.default table { border-collapse: collapse; border-spacing: 0; }
+.markdown.default td { vertical-align: top; }
+
+@media only screen and (min-width: 480px) {
+.markdown.default body{font-size:14px;}
+}
+
+@media only screen and (min-width: 768px) {
+.markdown.default body{font-size:16px;}
+}
+
+@media print {
+  .markdown.default * { background: transparent !important; color: black !important; filter:none !important; -ms-filter: none !important; }
+  .markdown.default body{font-size:12pt; max-width:100%;}
+  .markdown.default a, .markdown.default a:visited { text-decoration: underline; }
+  .markdown.default hr { height: 1px; border:0; border-bottom:1px solid black; }
+  .markdown.default a[href]:after { content: " (" attr(href) ")"; }
+  .markdown.default abbr[title]:after { content: " (" attr(title) ")"; }
+  .markdown.default .ir a:after, .markdown.default a[href^="javascript:"]:after, .markdown.default a[href^="#"]:after { content: ""; }
+  .markdown.default pre, .markdown.default blockquote { border: 1px solid #999; padding-right: 1em; page-break-inside: avoid; }
+  .markdown.default tr, .markdown.default img { page-break-inside: avoid; }
+  .markdown.default img { max-width: 100% !important; }
+  @page :left { margin: 15mm 20mm 15mm 10mm; }
+  @page :right { margin: 15mm 10mm 15mm 20mm; }
+  .markdown.default p, .markdown.default h2, .markdown.default h3 { orphans: 3; widows: 3; }
+  .markdown.default h2, .markdown.default h3 { page-break-after: avoid; }
+}

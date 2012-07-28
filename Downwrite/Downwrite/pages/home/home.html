@@ -1,0 +1,67 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>homePage</title>
+    
+    <!-- WinJS references -->
+    <link href="//Microsoft.WinJS.1.0.RC/css/ui-light.css" rel="stylesheet" />
+    <script src="//Microsoft.WinJS.1.0.RC/js/base.js"></script>
+    <script src="//Microsoft.WinJS.1.0.RC/js/ui.js"></script>
+    
+    <link href="/css/default.css" rel="stylesheet" />
+    <link href="/pages/home/home.css" rel="stylesheet" />
+    <link href="/pages/home/markdown.css" rel="stylesheet" />
+    <script src="/pages/home/home.js"></script>
+</head>
+<body>
+    <!-- The content that will be loaded and displayed. -->
+    <div class="fragment homepage">
+        <div id="filelist-container">
+            <ul id="filelist">
+                <li class="selected"><a href="#">Readme.md</a> <a href="#">&#xE0C7;</a></li>
+                <li class=""><a href="#">Readme.md</a> <a href="#">&#xE0C7;</a></li>
+                <li><a href="#">Readme.md</a></li>
+                <li><a href="#">Readme.md</a></li>
+                <li><a href="#">Readme.md</a></li>
+                <li><a href="#">Readme.md</a></li>
+                <li><a href="#">Readme.md</a></li>
+                <li class="new"><a href="#">&#xE0C5;</a></li>
+            <!-- /filelist --></ul>
+        <!-- /filelist-container --></div>
+        <section aria-label="Main content" role="main">
+            <div id="edit-pane">
+                <textarea id="editing-content" placeholder="Type your text!" autofocus></textarea>                
+            <!-- /edit-pane --></div>
+
+            <div id="preview-pane">
+                <header>
+                    <h2>Preview</h2>    
+                </header>
+                <div id="preview-content" class="markdown default">
+                    <p>Preview Content Here</p>
+                <!-- /preview-content --></div>
+            <!-- /preview-pane --></div>
+        </section>
+        <ul id="statusbar">
+            <li class="is-changed">&#xE0D8;</li>
+            <li class="file">Readme.md</li>
+            <li class="line">Line: <span id="line-count">0</span></li>
+            <li class="words">Words: <span id="words-count">0</span></li>
+            <li class="chars">Characters: <span id="chars-count">0</span></li>
+        </ul>
+
+        <!-- AppBar -->
+        <div id="appbar" class="win-ui-dark" data-win-control="WinJS.UI.AppBar">
+            <!-- Section: Selection -->
+            <button data-win-control="WinJS.UI.AppBarCommand" data-win-options="{icon:'save', id:'cmdSave', label:'Save', section:'selection'}"></button>
+            <button data-win-control="WinJS.UI.AppBarCommand" data-win-options="{icon:'save', id:'cmdSaveAs', label:'Save As', section:'selection'}"></button>
+
+            <!-- Section: Global -->
+            <button data-win-control="WinJS.UI.AppBarCommand" data-win-options="{icon:'twopage', id:'cmdPreview', label:'Preview'}"></button>
+            <button data-win-control="WinJS.UI.AppBarCommand" data-win-options="{icon:'openfile', id:'cmdOpen', label:'Open'}"></button>
+            <button data-win-control="WinJS.UI.AppBarCommand" data-win-options="{icon:'add', id:'cmdNew', label:'New'}"></button>
+        </div>
+    </div>
+</body>
+</html>

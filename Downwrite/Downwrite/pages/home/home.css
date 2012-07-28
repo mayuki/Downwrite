@@ -1,0 +1,112 @@
+﻿.homepage {
+    display: block;
+}
+.homepage section[role=main] {
+    display: -ms-grid;
+    -ms-grid-columns: 1fr 1fr;
+    -ms-grid-rows: 1fr;
+    height: 100%;
+}
+.homepage section[role=main] #edit-pane {
+    -ms-grid-column: 1;
+    -ms-grid-column-span: 2;
+    height: 100%;
+}
+.homepage section[role=main] #edit-pane.preview-visible {
+    -ms-grid-column-span: 1;
+}
+.homepage section[role=main] #edit-pane #editing-content {
+    height: calc(100% - 40px);
+    width: calc(100% - 40px);
+    margin: 0;
+    padding: 20px;
+    border: 0 none transparent;
+    outline: 0 none transparent;
+    font-size: 18pt;
+}
+.homepage section[role=main] #preview-pane {
+    -ms-grid-column: 2;
+    display: none;
+    border-left: 1px solid #000;
+}
+.homepage section[role=main] #preview-pane header {
+    -ms-grid-column: 2;
+    background-color: #000;
+    color: #fff;
+    padding: 20px;
+}
+.homepage section[role=main] #preview-pane #preview-content {
+    padding: 20px;
+}
+
+.homepage #statusbar {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+    margin: 0;
+    padding: 0;
+    color: #c0c0c0;
+    pointer-events: none;
+}
+.homepage #statusbar li {
+    list-style-type: none;
+    float: left;
+    margin: 0;
+    padding: 0;
+    margin-right: 20px;
+    pointer-events: none;
+    color: #505050;
+    text-shadow: -1px -1px 5px #fff,
+                 -1px  0px 5px #fff,
+                 -1px  1px 5px #fff,
+                  0px -1px 5px #fff,
+                  0px  0px 5px #fff,
+                  0px  1px 5px #fff,
+                  1px -1px 5px #fff,
+                  1px  0px 5px #fff,
+                  1px  1px 5px #fff;
+}
+.homepage #statusbar li.is-changed {
+    display: none;
+}
+
+.homepage #filelist {
+    position: absolute;
+    margin: 0;
+    padding: 20px 120px;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #000;
+    color: #fff;
+    display: none;
+}
+.homepage #filelist li {
+    list-style-type: none;
+    display: inline;
+    padding: 10px;
+    border: 5px solid transparent;
+}
+.homepage #filelist li.selected {
+    background-color: #505050;
+    /*border: 5px solid #c0c0c0;*/
+}
+.homepage #filelist li a {
+    color: #fff;
+}
+.homepage #filelist li.selected a {
+    /*border: 5px solid #c0c0c0;*/
+}
+
+@media screen and (-ms-view-state: snapped) {
+    .homepage section[role=main] {
+        margin-left: 20px;
+    }
+}
+
+@media screen and (-ms-view-state: portrait) {
+    .homepage section[role=main] {
+        margin-left: 100px;
+    }
+}
