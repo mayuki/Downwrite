@@ -64,9 +64,6 @@
             this._appBar.getCommandById('cmdSave').addEventListener('click', this._onCommandSave.bind(this));
             this._appBar.getCommandById('cmdSaveAs').addEventListener('click', this._onCommandSaveAs.bind(this));
             this._appBar.onbeforeshow = function () {
-                // update Edge UI filelist
-                this.updateFileList();
-
                 this._fileListNode.style.display = 'block';
                 WinJS.UI.Animation.showEdgeUI(this._fileListNode);
             }.bind(this);
@@ -105,45 +102,6 @@
 
                 this.updatePreview();
                 this.updateStatusBar();
-            }.bind(this));
-        },
-
-        updateFileList: function () {
-            return;
-            // clear
-            Array.prototype.forEach.call(this._fileListNode.querySelectorAll('.win-template'), function (e) {
-                this._fileListNode.removeChild(e);
-            }.bind(this));
-
-            var fileListItemTemplate = this._fragmentNode.querySelector('#template-filelist-item').winControl;
-            if (window.intellisense) fileListItemTemplate = new WinJS.Binding.Template();
-
-            Downwrite.OpenedFiles.forEach(function (downwriteFile) {
-                fileListItemTemplate.render(downwriteFile).done(function (fileListItemNode) {
-                    // Click Events
-                    fileListItemNode.querySelector('.filelist-item-name').addEventListener('click', function (e) {
-                        e.preventDefault();
-                        this.showFile(downwriteFile);
-                    }.bind(this));
-
-                    fileListItemNode.querySelector('.filelist-item-close').addEventListener('click', function (e) {
-                        e.preventDefault();
-                        if (downwriteFile.isUnsaved) {
-                        } else {
-                            Downwrite.closeFile(downwriteFile);
-                            if (Downwrite.OpenedFiles.length != 0) {
-                                if (this._currentFile == downwriteFile) {
-                                    this.showFile(Downwrite.OpenedFiles[0]);
-                                }
-                            } else {
-                                this.showFile(Downwrite.createFile());
-                            }
-                        }
-                    }.bind(this));
-
-                    this._fileListNode.insertAdjacentElement('afterBegin', fileListItemNode);
-                }.bind(this));
-
             }.bind(this));
         },
 
@@ -216,6 +174,17 @@
             }.bind(this));
         },
 
+        closeFile: function (file) {
+            Downwrite.closeFile(file);
+            if (Downwrite.OpenedFiles.length != 0) {
+                if (this._currentFile == file) {
+                    this.showFile(Downwrite.OpenedFiles.getAt(0));
+                }
+            } else {
+                this.showFile(Downwrite.createFile());
+            }
+        },
+
         undo: function () {
             if (this._currentFile.undo()) {
                 this._editingContentNode.value = this._currentFile.content;
@@ -272,7 +241,6 @@
         // -- events
         _onCommandNew: function (args) {
             this.showFile(Downwrite.createFile());
-            this.updateFileList();
         },
         _onCommandOpen: function (args) {
             this.open().then(function () {
@@ -295,7 +263,6 @@
 
         _onFileListNewClicked: function (e) {
             this.showFile(Downwrite.createFile());
-            this.updateFileList();
         },
 
         _onPreviewPaneClick: function (e) {
@@ -344,15 +311,29 @@
                     e.preventDefault();
                     if (downwriteFile.isUnsaved) {
                         // TODO: ...
-                    } else {
-                        Downwrite.closeFile(downwriteFile);
-                        if (Downwrite.OpenedFiles.length != 0) {
-                            if (this._currentFile == downwriteFile) {
-                                this.showFile(Downwrite.OpenedFiles.getAt(0));
+                        var msgDialog = Windows.UI.Popups.MessageDialog("File '" + downwriteFile.name + "' was changed.", "Save Changes?");
+                        msgDialog.commands.append(new Windows.UI.Popups.UICommand("Save", null, "Save"));
+                        msgDialog.commands.append(new Windows.UI.Popups.UICommand("Discard Changes", null, "Close"));
+                        msgDialog.commands.append(new Windows.UI.Popups.UICommand("Cancel", null, "Cancel"));
+                        msgDialog.cancelCommandIndex = 2;
+                        msgDialog.showAsync().done(function (result) {
+                            switch (result.id) {
+                                case 'Save':
+                                    this.save().then(function () {
+                                        this.closeFile(downwriteFile);
+                                    }.bind(this));
+                                    break;
+                                case 'Close':
+                                    this.closeFile(downwriteFile);
+                                    break;
+                                default:
+                                    // Cancel
+                                    break;
                             }
-                        } else {
-                            this.showFile(Downwrite.createFile());
-                        }
+                        }.bind(this));
+
+                    } else {
+                        this.closeFile(downwriteFile);
                     }
                 }.bind(this));
 
