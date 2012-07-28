@@ -71,6 +71,7 @@
             this._appBar.getCommandById('cmdOpen').addEventListener('click', this._onCommandOpen.bind(this));
             this._appBar.getCommandById('cmdSave').addEventListener('click', this._onCommandSave.bind(this));
             this._appBar.getCommandById('cmdSaveAs').addEventListener('click', this._onCommandSaveAs.bind(this));
+            this._appBar.getCommandById('cmdUndo').addEventListener('click', this._onCommandUndo.bind(this));
             this._appBar.onbeforeshow = function () {
                 this._fileListNode.style.display = 'block';
                 WinJS.UI.Animation.showEdgeUI(this._fileListNode);
@@ -269,6 +270,9 @@
             } else {
                 statusBar.style.bottom = '0px';
             }
+        },
+        _onCommandUndo: function (args) {
+            this.undo();
         },
         _onCommandNew: function (args) {
             this.showFile(Downwrite.createFile());
