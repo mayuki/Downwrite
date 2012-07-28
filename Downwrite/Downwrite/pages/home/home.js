@@ -32,9 +32,11 @@
 
             this._editingContentNode = element.querySelector('textarea');
             this._previewContentNode = element.querySelector('#preview-content');
+            this._previewPaneNode = element.querySelector('#preview-pane');
 
             this._editingContentNode.addEventListener('keyup', this._onEditingContentKeyup.bind(this));
             this._editingContentNode.addEventListener('click', this._onEditingContentClick.bind(this));
+            this._previewPaneNode.addEventListener('click', this._onPreviewPaneClick.bind(this));
 
             this.prepareAppBar();
             this.showFile(Downwrite.createFile());
@@ -308,6 +310,10 @@
         _onFileListNewClicked: function (e) {
             this.showFile(Downwrite.createFile());
             this.updateFileList();
+        },
+
+        _onPreviewPaneClick: function (e) {
+            this._appBar.hide();
         },
 
         _onEditingContentClick: function (e) {
