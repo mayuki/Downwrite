@@ -59,6 +59,7 @@
     <Content Include="js\downwrite.js" />
     <Content Include="js\markdown.js" />
     <Content Include="js\navigator.js" />
+    <Content Include="pages\flyoutHelp\flyoutHelp.html" />
     <Content Include="pages\home\home.css" />
     <Content Include="pages\home\home.html" />
     <Content Include="pages\home\home.js" />

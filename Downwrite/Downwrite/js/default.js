@@ -44,5 +44,10 @@
         app.sessionState.history = nav.history;
     };
 
+    app.onsettings = function (e) {
+        e.detail.applicationcommands = { "Help": { title: "Markdown Syntax", href: "/pages/flyoutHelp/flyoutHelp.html" } };
+        WinJS.UI.SettingsFlyout.populateSettings(e);
+    }
+
     app.start();
 })();

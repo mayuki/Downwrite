@@ -1,0 +1,97 @@
+﻿<!DOCTYPE html>
+<html>
+    <head>
+        <title>flyoutHelp</title>
+        <style>
+            .flyout-help pre {
+                border-top: 1px solid #c0c0c0;
+                border-bottom: 1px solid #c0c0c0;
+                background-color: #f0f0f0;
+                -ms-word-break: break-all;
+                white-space: pre-wrap;
+            }
+            .flyout-help .win-content .win-settings-section p.or {
+                text-align: center;
+                padding: 0;
+                margin: 0;
+            }
+        </style>
+    </head>
+    <body>
+        <div data-win-control="WinJS.UI.SettingsFlyout"
+             class="flyout-help"
+             aria-label="Help"
+             data-win-options="{
+                                settingsCommandId:'Help',
+                                width:'narrow',
+                               }">
+            <div class="win-ui-dark win-header">
+               <button type="button" onclick="WinJS.UI.SettingsFlyout.show()" class="win-backbutton"></button>
+               <div class="win-label">Markdown Syntax</div>
+            </div>                
+            <div class="win-content">
+                <div class="win-settings-section">
+                    <h3>Headers</h3>
+                    <pre>Heading 1
+===========
+
+Heading 2
+------------</pre>
+                    <p class="or">or</p>
+                    <pre># Heading 1
+## Heading 2
+### Heading 3</pre>
+                    <h3>Blockquotes</h3>
+                    <pre>&gt; This is a blockquote.
+&gt; 
+&gt; This is the first level.
+&gt; &gt; This is nested blockquote.
+&gt; Back to the first level.</pre>
+                    <h3>Lists</h3>
+                    <h4>Unordered List</h4>
+                    <pre>+ Red
++ Green
++ Blue</pre>
+                    <p class="or">or</p>
+                    <pre>- Red
+- Green
+- Blue</pre>
+                    <p class="or">or</p>
+                    <pre>* Red
+* Green
+* Blue</pre>
+                    <h4>Ordered List</h4>
+                    <pre>1. Kyoko
+2. Yui
+3. Chinatsu</pre>
+                    <h3>Code Blocks</h3>
+                    <pre>This is a normal paragraph:
+
+    This is a code block.</pre>
+
+                    <h3>Links</h3>
+                    <pre>This is [an example](http://example.com/ "Title") inline link.
+
+[This link](http://example.net/) has no title attribute.</pre>
+
+                    <h3>Emphasis</h3>
+                    <pre>*single asterisks(em)*
+
+_single underscores(em)_
+
+**double asterisks(strong)**
+
+__double underscores(strong)__</pre>
+
+                    <h3>Images</h3>
+                    <pre>![Alt text](/path/to/img.jpg)
+
+![Alt text](/path/to/img.jpg "Optional title")</pre>
+
+                    <h3>Citation &amp; Details</h3>
+                    <p><a href="http://daringfireball.net/projects/markdown/syntax/">Markdown: Syntax (by John Gruber)</a></p>
+                <!-- /win-settings-section --></div>
+            </div>
+        </div>
+    </body>
+</html>
