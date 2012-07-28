@@ -3,6 +3,9 @@ Downwrite
 
 Markdown Editor for Metro style apps
 
+![Screenshot_01](https://github.com/mayuki/Downwrite/raw/master/Resources/Screenshot/screenshot_01.png)
+![Screenshot_02](https://github.com/mayuki/Downwrite/raw/master/Resources/Screenshot/screenshot_02.png)
+
 License （MIT License)
 ------------------------
 Mayuki Sawatari <<mayuki@misuzilla.org>>
