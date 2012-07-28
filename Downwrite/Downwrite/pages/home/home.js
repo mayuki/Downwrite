@@ -308,7 +308,7 @@
             this._appBar.hide();
         },
         _onEditingContentKeyup: function (e) {
-                if (e.keyCode == 90 && e.ctrlKey) {
+            if (e.keyCode == 90 && e.ctrlKey) {
                 // Ctrl+Z: Undo
                 e.preventDefault();
                 e.stopPropagation();
@@ -323,6 +323,11 @@
                 e.preventDefault();
                 e.stopPropagation();
                 this.open();
+            } else if (e.keyCode == 69 && e.ctrlKey) {
+                // Ctrl+E: Preview
+                e.preventDefault();
+                e.stopPropagation();
+                this.togglePreview();
             } else {
                 // update content & store to undo buffer
                 this._currentFile.content = this._editingContentNode.value;
