@@ -147,10 +147,13 @@
         MainPage: null,
 
         File: Downwrite_File,
-        OpenedFiles: [],
+        OpenedFiles: new WinJS.Binding.List([]),
 
         closeFile: function (targetFile) {
-            Downwrite.OpenedFiles = Downwrite.OpenedFiles.filter(function (file) { return file != targetFile; });
+            var index = Downwrite.OpenedFiles.indexOf(targetFile);
+            if (index > -1) {
+                Downwrite.OpenedFiles.splice(index, 1);
+            }
         },
         openFile: function (file) {
             // TODO: 多重オープン

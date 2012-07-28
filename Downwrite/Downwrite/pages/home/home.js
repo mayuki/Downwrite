@@ -20,12 +20,14 @@
         _currentFile: null,
         /// <field name="_isPreviewVisible" type="Boolean" />
         _isPreviewVisible: false,
+        /// <field name="_fileListItemTemplate" type="WinJS.Binding.Template" />
+        _fileListItemTemplate: false,
 
         ready: function (element, options) {
             this._fragmentNode = element;
 
             this._fileListNode = this._fragmentNode.querySelector('#filelist');
-            this._fileListNode.querySelector('li.new a').addEventListener('click', this._onFileListNewClicked.bind(this));
+            this._fileListNode.querySelector('.filelist-item-new a').addEventListener('click', this._onFileListNewClicked.bind(this));
 
             this._appBar = element.querySelector('#appbar').winControl;
             if (window.intellisense) this._appBar = new WinJS.UI.AppBar();
@@ -38,15 +40,20 @@
             this._editingContentNode.addEventListener('click', this._onEditingContentClick.bind(this));
             this._previewPaneNode.addEventListener('click', this._onPreviewPaneClick.bind(this));
 
+            this._fileListItemTemplate = element.querySelector('#template-filelist-item').winControl;
+            if (window.intellisense) this._fileListItemTemplate = new WinJS.Binding.Template();
+
+            Downwrite.OpenedFiles.addEventListener('iteminserted', this._onItemInserted.bind(this));
+            Downwrite.OpenedFiles.addEventListener('itemremoved', this._onItemRemoved.bind(this));
+
+            this._editingContentNode.value = ''; // WORKAROUND: (Win8RP)なぜかplaceholderの値が入ってしまうので消す…。
+
             this.prepareAppBar();
-            this.showFile(Downwrite.createFile());
-
-            this._editingContentNode.value = '';
-
             this.togglePreview(false);
-            WinJS.Promise.timeout(0).then(function () { this._editingContentNode.blur() }.bind(this));
 
+            // ready!
             Downwrite.MainPage = this;
+            this.showFile(Downwrite.createFile());
         },
 
         prepareAppBar: function () {
@@ -102,68 +109,41 @@
         },
 
         updateFileList: function () {
+            return;
             // clear
-            Array.prototype.forEach.call(this._fileListNode.querySelectorAll('li:not(.new)'), function (e) {
+            Array.prototype.forEach.call(this._fileListNode.querySelectorAll('.win-template'), function (e) {
                 this._fileListNode.removeChild(e);
             }.bind(this));
 
+            var fileListItemTemplate = this._fragmentNode.querySelector('#template-filelist-item').winControl;
+            if (window.intellisense) fileListItemTemplate = new WinJS.Binding.Template();
+
             Downwrite.OpenedFiles.forEach(function (downwriteFile) {
-                // TODO: テンプレートに出す
-                var liNode = document.createElement('li');
-                liNode._downwriteFile = downwriteFile;
+                fileListItemTemplate.render(downwriteFile).done(function (fileListItemNode) {
+                    // Click Events
+                    fileListItemNode.querySelector('.filelist-item-name').addEventListener('click', function (e) {
+                        e.preventDefault();
+                        this.showFile(downwriteFile);
+                    }.bind(this));
 
-                var aNode = document.createElement('a');
-                aNode.textContent = downwriteFile.name;
-                aNode.classList.add('file-name');
-                aNode.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    this.showFile(downwriteFile);
-                    WinJS.Utilities.query('li:not(.new)', this._fileListNode).removeClass('selected');
-                    liNode.classList.add('selected');
-                }.bind(this));
-                var aNodeClose = document.createElement('a');
-                aNodeClose.textContent = '\uE0C7';
-                aNodeClose.classList.add('file-close-button');
-                aNodeClose.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    if (downwriteFile.isUnsaved) {
-                    } else {
-                        Downwrite.closeFile(downwriteFile);
-                        if (Downwrite.OpenedFiles.length != 0) {
-                            if (this._currentFile == downwriteFile) {
-                                this.showFile(Downwrite.OpenedFiles[0]);
-                            }
+                    fileListItemNode.querySelector('.filelist-item-close').addEventListener('click', function (e) {
+                        e.preventDefault();
+                        if (downwriteFile.isUnsaved) {
                         } else {
-                            this.showFile(Downwrite.createFile());
-                        }
-
-                        liNode.classList.remove('selected');
-                        liNode.classList.add('deleting');
-                        var deleteFromList = WinJS.UI.Animation.createDeleteFromListAnimation(liNode, this._fileListNode.querySelectorAll('li:not(.deleting)'));
-                        liNode.style.opacity = '0';
-                        liNode.style.position = 'fixed';
-                        deleteFromList.execute().then(function () {
-                            this._fileListNode.removeChild(liNode);
-                            WinJS.Utilities.query('li:not(.new)', this._fileListNode).forEach(function (element) {
-                                if (element._downwriteFile == this._currentFile) {
-                                    element.classList.add('selected');
-                                } else {
-                                    element.classList.remove('selected');
+                            Downwrite.closeFile(downwriteFile);
+                            if (Downwrite.OpenedFiles.length != 0) {
+                                if (this._currentFile == downwriteFile) {
+                                    this.showFile(Downwrite.OpenedFiles[0]);
                                 }
-                            }.bind(this));
-                        }.bind(this));
-                        //this.updateFileList();
-                    }
+                            } else {
+                                this.showFile(Downwrite.createFile());
+                            }
+                        }
+                    }.bind(this));
+
+                    this._fileListNode.insertAdjacentElement('afterBegin', fileListItemNode);
                 }.bind(this));
-                liNode.appendChild(aNode);
-                liNode.appendChild(document.createTextNode(' '));
-                liNode.appendChild(aNodeClose);
 
-                if (this._currentFile == downwriteFile) {
-                    liNode.classList.add('selected');
-                }
-
-                this._fileListNode.insertAdjacentElement('afterBegin', liNode);
             }.bind(this));
         },
 
@@ -214,7 +194,12 @@
         },
 
         showFile: function (file) {
+            if (this._currentFile) {
+                this._currentFile.isSelected = false;
+            }
+
             this._currentFile = file;
+            this._currentFile.isSelected = true;
             this._editingContentNode.value = file.content;
             this.updatePreview();
             this.updateStatusBar();
@@ -342,6 +327,60 @@
 
                 // update status
                 this.queueUpdate();
+            }
+        },
+
+        _onItemInserted: function (args) {
+            var downwriteFile = args.detail.value;
+            this._fileListItemTemplate.render(downwriteFile).done(function (fileListItemNode) {
+                fileListItemNode._downwriteFile = downwriteFile;
+
+                fileListItemNode.querySelector('.filelist-item-name').addEventListener('click', function (e) {
+                    e.preventDefault();
+                    this.showFile(downwriteFile);
+                }.bind(this));
+
+                fileListItemNode.querySelector('.filelist-item-close').addEventListener('click', function (e) {
+                    e.preventDefault();
+                    if (downwriteFile.isUnsaved) {
+                        // TODO: ...
+                    } else {
+                        Downwrite.closeFile(downwriteFile);
+                        if (Downwrite.OpenedFiles.length != 0) {
+                            if (this._currentFile == downwriteFile) {
+                                this.showFile(Downwrite.OpenedFiles.getAt(0));
+                            }
+                        } else {
+                            this.showFile(Downwrite.createFile());
+                        }
+                    }
+                }.bind(this));
+
+                var addFromList = WinJS.UI.Animation.createAddToListAnimation(fileListItemNode, this._fileListNode.querySelectorAll('.win-template'));
+                this._fileListNode.insertAdjacentElement('afterBegin', fileListItemNode);
+                addFromList.execute();
+
+            }.bind(this));
+        },
+
+        _onItemRemoved: function (args) {
+            var downwriteFile = args.detail.value;
+            var templateItems = this._fileListNode.querySelectorAll('.win-template');
+            for (var i = 0, n = templateItems.length; i < n; i++) {
+                var templateItem = templateItems[i];
+                if (templateItem._downwriteFile == downwriteFile) {
+                    // remove animation
+                    templateItem.classList.add('deleting');
+                    var deleteFromList = WinJS.UI.Animation.createDeleteFromListAnimation(templateItem, this._fileListNode.querySelectorAll('.win-template:not(.deleting)'));
+                    templateItem.style.opacity = '0';
+                    templateItem.style.position = 'fixed';
+                    deleteFromList.execute().then(function () {
+                        // animation complete
+                        this._fileListNode.removeChild(templateItem);
+                    }.bind(this));
+
+                    break;
+                }
             }
         }
     });

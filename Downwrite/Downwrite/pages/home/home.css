@@ -87,20 +87,24 @@
     color: #fff;
     display: none;
 }
-.homepage #filelist li {
-    list-style-type: none;
+.homepage #filelist div {
     display: inline;
+}
+.homepage #filelist .filelist-item {
+    list-style-type: none;
+    display: inline-block;
     padding: 10px;
     border: 5px solid transparent;
 }
-.homepage #filelist li.selected {
-    background-color: #505050;
-    /*border: 5px solid #c0c0c0;*/
-}
-.homepage #filelist li a {
+.homepage #filelist .filelist-item a {
     color: #fff;
 }
-.homepage #filelist li.selected a {
+
+.homepage #filelist [data-downwrite-filelist-item-is-selected].val-true .filelist-item {
+    background-color: #606060;
+    /*border: 5px solid #c0c0c0;*/
+}
+.homepage #filelist [data-downwrite-filelist-item-is-selected].val-true .filelist-item a {
     /*border: 5px solid #c0c0c0;*/
 }
 
