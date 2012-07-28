@@ -45,14 +45,18 @@
 }
 
 .homepage #statusbar {
-    position: absolute;
-    bottom: 20px;
+    position: fixed;
+    bottom: 0px;
     left: 20px;
     right: 20px;
     margin: 0;
     padding: 0;
+    margin-bottom: 20px;
     color: #c0c0c0;
     pointer-events: none;
+    
+    -ms-transition-duration: 0.1s;
+    -ms-transition-property: bottom;
 }
 .homepage #statusbar li {
     list-style-type: none;

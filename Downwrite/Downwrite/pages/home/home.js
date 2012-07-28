@@ -40,6 +40,8 @@
             this._editingContentNode.addEventListener('click', this._onEditingContentClick.bind(this));
             this._previewPaneNode.addEventListener('click', this._onPreviewPaneClick.bind(this));
 
+            window.addEventListener('resize', this._onResized.bind(this));
+
             this._fileListItemTemplate = element.querySelector('#template-filelist-item').winControl;
             if (window.intellisense) this._fileListItemTemplate = new WinJS.Binding.Template();
 
@@ -54,6 +56,10 @@
             // ready!
             Downwrite.MainPage = this;
             this.showFile(Downwrite.createFile());
+        },
+
+        unload: function () {
+            window.removeEventListener('resize', this._onResized.bind(this));
         },
 
         prepareAppBar: function () {
@@ -239,6 +245,15 @@
         },
 
         // -- events
+        _onResized: function() {
+            var statusBar = this._fragmentNode.querySelector('#statusbar');
+            var keyboardHeight = window.outerHeight - window.innerHeight;
+            if (keyboardHeight > 0) {
+                statusBar.style.bottom = keyboardHeight + 'px';
+            } else {
+                statusBar.style.bottom = '0px';
+            }
+        },
         _onCommandNew: function (args) {
             this.showFile(Downwrite.createFile());
         },
