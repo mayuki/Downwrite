@@ -24,6 +24,11 @@
     outline: 0 none transparent;
     font-size: 18pt;
 }
+.homepage section[role=main] #edit-pane #editing-content:-ms-input-placeholder {
+    font-size: 30pt;
+    font-family: 'Segoe UI Light';
+    color: #c0c0c0;
+}
 .homepage section[role=main] #preview-pane {
     -ms-grid-column: 2;
     display: none;

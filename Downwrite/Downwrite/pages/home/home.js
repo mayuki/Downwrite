@@ -44,6 +44,7 @@
             this._editingContentNode.value = '';
 
             this.togglePreview(false);
+            WinJS.Promise.timeout(0).then(function () { this._editingContentNode.blur() }.bind(this));
 
             Downwrite.MainPage = this;
         },
