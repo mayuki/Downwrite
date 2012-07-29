@@ -213,15 +213,43 @@
             }.bind(this));
         },
 
-        closeFile: function (file) {
-            Downwrite.closeFile(file);
-            if (Downwrite.OpenedFiles.length != 0) {
-                if (this._currentFile == file) {
-                    this.showFile(Downwrite.OpenedFiles.getAt(0));
-                }
-            } else {
-                this.showFile(Downwrite.createFile());
+        closeFile: function (downwriteFile) {
+            var promise = WinJS.Promise.wrap();
+            if (downwriteFile.isUnsaved) {
+                var msgDialog = Windows.UI.Popups.MessageDialog("File '" + downwriteFile.name + "' was changed.", "Save Changes?");
+                msgDialog.commands.append(new Windows.UI.Popups.UICommand("Save", null, "Save"));
+                msgDialog.commands.append(new Windows.UI.Popups.UICommand("Discard Changes", null, "Close"));
+                msgDialog.commands.append(new Windows.UI.Popups.UICommand("Cancel", null, "Cancel"));
+                msgDialog.cancelCommandIndex = 2;
+
+                // show dialog 
+                promise = msgDialog.showAsync().then(function (result) {
+                    switch (result.id) {
+                        case 'Save':
+                            return this.save();
+                            break;
+                        case 'Close':
+                            return WinJS.Promise.wrap();
+                            break;
+                        default:
+                            // Cancel
+                            return WinJS.Promise.wrapError();
+                            break;
+                    }
+                }.bind(this));
             }
+
+            // close & open next file
+            promise.then(function () {
+                Downwrite.closeFile(downwriteFile);
+                if (Downwrite.OpenedFiles.length != 0) {
+                    if (this._currentFile == downwriteFile) {
+                        this.showFile(Downwrite.OpenedFiles.getAt(0));
+                    }
+                } else {
+                    this.showFile(Downwrite.createFile());
+                }
+            }.bind(this));
         },
 
         undo: function () {
@@ -347,26 +375,58 @@
             }
         },
         _onEditingContentKeyup: function (e) {
-            if (e.keyCode == 90 && e.ctrlKey) {
-                // Ctrl+Z: Undo
-                e.preventDefault();
+            if (e.ctrlKey) {
+                switch (e.key) {
+                    case 'z':
+                        // Ctrl+Z: Undo
+                        this.undo();
+                        break;
+                    case 's':
+                        // Ctrl+S: Save
+                        this.save();
+                        break;
+                    case 'o':
+                        // Ctrl+O: Open
+                        this.open();
+                        break;
+                    case 'e':
+                        // Ctrl+E: Preview
+                        this.togglePreview();
+                        break;
+                    case 't':
+                    case 'n':
+                        // Ctrl+T/Ctrl+N: New
+                        this.showFile(Downwrite.createFile());
+                        break;
+                    case 'w':
+                        // Ctrl-W: Close
+                        this.closeFile(this._currentFile);
+                        break;
+                    case 'Tab':
+                        // Ctrl-Tab: Switch
+                        if (Downwrite.OpenedFiles.length < 1) return;
+
+                        var nextIndex = 0;
+                        var index = Downwrite.OpenedFiles.indexOf(this._currentFile);
+                        if (e.shiftKey) {
+                            if (index == 0) {
+                                nextIndex = Downwrite.OpenedFiles.length - 1;
+                            } else {
+                                nextIndex = index - 1;
+                            }
+                        } else {
+                            if (index + 1 < Downwrite.OpenedFiles.length) {
+                                nextIndex = index + 1;
+                            }
+                        }
+                        this.showFile(Downwrite.OpenedFiles.getAt(nextIndex));
+                        break;
+                    default:
+                        // cancel
+                        return;
+                }
                 e.stopPropagation();
-                this.undo();
-            } else if (e.keyCode == 83 && e.ctrlKey) {
-                // Ctrl+S: Save
                 e.preventDefault();
-                e.stopPropagation();
-                this.save();
-            } else if (e.keyCode == 79 && e.ctrlKey) {
-                // Ctrl+O: Open
-                e.preventDefault();
-                e.stopPropagation();
-                this.open();
-            } else if (e.keyCode == 69 && e.ctrlKey) {
-                // Ctrl+E: Preview
-                e.preventDefault();
-                e.stopPropagation();
-                this.togglePreview();
             }
         },
 
@@ -382,32 +442,7 @@
 
                 fileListItemNode.querySelector('.filelist-item-close').addEventListener('click', function (e) {
                     e.preventDefault();
-                    if (downwriteFile.isUnsaved) {
-                        // TODO: ...
-                        var msgDialog = Windows.UI.Popups.MessageDialog("File '" + downwriteFile.name + "' was changed.", "Save Changes?");
-                        msgDialog.commands.append(new Windows.UI.Popups.UICommand("Save", null, "Save"));
-                        msgDialog.commands.append(new Windows.UI.Popups.UICommand("Discard Changes", null, "Close"));
-                        msgDialog.commands.append(new Windows.UI.Popups.UICommand("Cancel", null, "Cancel"));
-                        msgDialog.cancelCommandIndex = 2;
-                        msgDialog.showAsync().done(function (result) {
-                            switch (result.id) {
-                                case 'Save':
-                                    this.save().then(function () {
-                                        this.closeFile(downwriteFile);
-                                    }.bind(this));
-                                    break;
-                                case 'Close':
-                                    this.closeFile(downwriteFile);
-                                    break;
-                                default:
-                                    // Cancel
-                                    break;
-                            }
-                        }.bind(this));
-
-                    } else {
-                        this.closeFile(downwriteFile);
-                    }
+                    this.closeFile(downwriteFile);
                 }.bind(this));
 
                 var addFromList = WinJS.UI.Animation.createAddToListAnimation(fileListItemNode, this._fileListNode.querySelectorAll('.win-template'));
