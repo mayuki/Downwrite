@@ -10,14 +10,6 @@
 
     app.addEventListener("activated", function (args) {
         if (args.detail.kind === activation.ActivationKind.launch) {
-            if (args.detail.previousExecutionState !== activation.ApplicationExecutionState.terminated) {
-                // TODO: This application has been newly launched. Initialize
-                // your application here.
-            } else {
-                // TODO: This application has been reactivated from suspension.
-                // Restore application state here.
-            }
-
             if (app.sessionState.history) {
                 nav.history = app.sessionState.history;
             }
@@ -28,8 +20,37 @@
                 } else {
                     return nav.navigate(Application.navigator.home);
                 }
+            }).then(function () {
+                // Restore state after the pages are ready.
+                if (args.detail.previousExecutionState === activation.ApplicationExecutionState.terminated) {
+                    // Restore application state here.
+                    app.sessionState.openedFiles.forEach(function (fileInfo) {
+                        if (fileInfo.mruListToken) {
+                            // open from MRU
+                            Windows.Storage.AccessCache.StorageApplicationPermissions.mostRecentlyUsedList.getFileAsync(fileInfo.mruListToken).then(function (file) {
+                                Downwrite.MainPage.openFile(file).then(function (downwriteFile) {
+                                    if (fileInfo.isUnsaved) {
+                                        downwriteFile.content = fileInfo.content;
+                                        downwriteFile.lastChangedAt = fileInfo.lastChangedAt;
+                                    }
+                                });
+                            });
+                        } else {
+                            // create
+                            var downwriteFile = Downwrite.createFile();
+                            downwriteFile._temporaryName = fileInfo.name;
+                            downwriteFile.content        = fileInfo.content || '';
+                            downwriteFile.lastChangedAt  = fileInfo.lastChangedAt;
+                            downwriteFile.notify('name', downwriteFile.name); // for changing '_temporaryName' property
+                        }
+                    });
+                    Downwrite.File._seqNum = app.sessionState.openedFilesSequenceNumber;
+                }
             }));
+
+
         } else if (args.detail.kind === activation.ActivationKind.file) {
+            // Launch with a file from Explorer or external program.
             var nextPromise;
             if (!Downwrite.MainPage) {
                 nextPromise = WinJS.UI.processAll().then(function () {
@@ -60,6 +81,22 @@
         // complete an asynchronous operation before your application is 
         // suspended, call args.setPromise().
         app.sessionState.history = nav.history;
+
+        app.sessionState.openedFilesSequenceNumber = Downwrite.File._seqNum;
+        app.sessionState.openedFiles = Downwrite.OpenedFiles.map(function (downwriteFile) {
+            /// <param name="downwriteFile" type="Downwrite.File" />
+            var mruListToken;
+            if (downwriteFile.file) {
+                mruListToken = Windows.Storage.AccessCache.StorageApplicationPermissions.mostRecentlyUsedList.add(downwriteFile.file);
+            }
+            return {
+                name         : downwriteFile.name,
+                mruListToken : mruListToken,
+                isUnsaved    : downwriteFile.isUnsaved,
+                content      : (downwriteFile.isUnsaved ? downwriteFile.content : null),
+                lastChangedAt: downwriteFile.lastChangedAt
+            };
+        });
     };
 
     app.onsettings = function (e) {

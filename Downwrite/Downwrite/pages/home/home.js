@@ -207,6 +207,8 @@
 
             return Downwrite.openFile(file).then(function (downwriteFile) {
                 this.showFile(downwriteFile);
+
+                return WinJS.Promise.wrap(downwriteFile);
             }.bind(this));
         },
 
