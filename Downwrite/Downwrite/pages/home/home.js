@@ -136,7 +136,6 @@
             this._updateQueue.cancel();
 
             this._updateQueue = WinJS.Promise.timeout(250).then(function () {
-
                 this.updatePreview();
                 this.updateStatusBar();
             }.bind(this));
@@ -358,10 +357,12 @@
                 this.togglePreview();
             } else {
                 // update content & store to undo buffer
-                this._currentFile.content = this._editingContentNode.value;
+                if (this._currentFile.content != this._editingContentNode.value) {
+                    this._currentFile.content = this._editingContentNode.value;
 
-                // update status
-                this.queueUpdate();
+                    // update status
+                    this.queueUpdate();
+                }
             }
         },
 
