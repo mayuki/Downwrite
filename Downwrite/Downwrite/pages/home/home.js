@@ -24,35 +24,15 @@
         _fileListItemTemplate: false,
 
         ready: function (element, options) {
-            this._fragmentNode = element;
-
-            this._fileListNode = this._fragmentNode.querySelector('#filelist');
-            this._fileListNode.querySelector('.filelist-item-new a').addEventListener('click', this._onFileListNewClicked.bind(this));
-
-            this._appBar = element.querySelector('#appbar').winControl;
-            if (window.intellisense) this._appBar = new WinJS.UI.AppBar();
-
-            this._editingContentNode = element.querySelector('textarea');
-            this._previewContentNode = element.querySelector('#preview-content');
-            this._previewPaneNode = element.querySelector('#preview-pane');
-
-            this._editingContentNode.addEventListener('keyup', this._onEditingContentKeyup.bind(this));
-            this._editingContentNode.addEventListener('click', this._onEditingContentClick.bind(this));
-            this._previewPaneNode.addEventListener('click', this._onPreviewPaneClick.bind(this));
-
-            window.addEventListener('resize', this._onResized.bind(this));
-            window.addEventListener('scroll', this._onScrolled.bind(this));
-
-            this._fileListItemTemplate = element.querySelector('#template-filelist-item').winControl;
-            if (window.intellisense) this._fileListItemTemplate = new WinJS.Binding.Template();
-
-            Downwrite.OpenedFiles.addEventListener('iteminserted', this._onItemInserted.bind(this));
-            Downwrite.OpenedFiles.addEventListener('itemremoved', this._onItemRemoved.bind(this));
-
-            this._editingContentNode.value = ''; // WORKAROUND: (Win8RP)なぜかplaceholderの値が入ってしまうので消す…。
+            this.initializeComponents(element);
 
             this.prepareAppBar();
             this.togglePreview(false);
+            this.setSharingContract();
+
+            // events
+            window.addEventListener('resize', this._onResized.bind(this));
+            window.addEventListener('scroll', this._onScrolled.bind(this));
 
             // ready!
             Downwrite.MainPage = this;
@@ -62,6 +42,48 @@
         unload: function () {
             window.removeEventListener('resize', this._onResized.bind(this));
             window.removeEventListener('scroll', this._onScrolled.bind(this));
+
+            this.unsetSharingContract();
+        },
+
+        // -- methods
+
+        initializeComponents: function (element) {
+            this._fragmentNode = element;
+
+            // filelist
+            this._fileListNode = this._fragmentNode.querySelector('#filelist');
+            this._fileListNode.querySelector('.filelist-item-new a').addEventListener('click', this._onFileListNewClicked.bind(this));
+
+            // filelist template
+            this._fileListItemTemplate = element.querySelector('#template-filelist-item').winControl;
+            if (window.intellisense) this._fileListItemTemplate = new WinJS.Binding.Template();
+
+            // appbar
+            this._appBar = element.querySelector('#appbar').winControl;
+            if (window.intellisense) this._appBar = new WinJS.UI.AppBar();
+
+            // editingcontent/previewcontent/previewpane
+            this._editingContentNode = element.querySelector('textarea');
+            this._previewContentNode = element.querySelector('#preview-content');
+            this._previewPaneNode = element.querySelector('#preview-pane');
+            this._editingContentNode.addEventListener('keyup', this._onEditingContentKeyup.bind(this));
+            this._editingContentNode.addEventListener('click', this._onEditingContentClick.bind(this));
+            this._previewPaneNode.addEventListener('click', this._onPreviewPaneClick.bind(this));
+            this._editingContentNode.value = ''; // WORKAROUND: (Win8RP)なぜかplaceholderの値が入ってしまうので消す…。
+
+            // databind
+            Downwrite.OpenedFiles.addEventListener('iteminserted', this._onItemInserted.bind(this));
+            Downwrite.OpenedFiles.addEventListener('itemremoved', this._onItemRemoved.bind(this));
+        },
+
+        setSharingContract: function () {
+            var dataTransferManager = Windows.ApplicationModel.DataTransfer.DataTransferManager.getForCurrentView();
+            dataTransferManager.addEventListener("datarequested", this._onDataRequested.bind(this));
+        },
+        unsetSharingContract: function () {
+            var dataTransferManager = Windows.ApplicationModel.DataTransfer.DataTransferManager.getForCurrentView();
+            dataTransferManager.removeEventListener("datarequested", this._onDataRequested.bind(this));
         },
 
         prepareAppBar: function () {
@@ -402,6 +424,21 @@
 
                     break;
                 }
+            }
+        },
+
+        _onDataRequested: function (e) {
+            var request = e.request;
+            var fragmentNode = document.createElement('div');
+            fragmentNode.innerHTML = this._currentFile.toHTML();
+            var dataPackage = new Windows.ApplicationModel.DataTransfer.DataPackage();
+            var htmlFormat = Windows.ApplicationModel.DataTransfer.HtmlFormatHelper.createHtmlFormat(this._currentFile.toHTML());
+
+            if (htmlFormat != '') {
+                dataPackage.setHtmlFormat(htmlFormat);
+                dataPackage.properties.title = this._currentFile.name;
+
+                request.data = dataPackage;
             }
         }
     });
