@@ -23,6 +23,7 @@
     border: 0 none transparent;
     outline: 0 none transparent;
     font-size: 18pt;
+    font-family: 'Consolas', 'Lucida Sans Typewriter', sans-serif;
 }
 .homepage section[role=main] #edit-pane #editing-content:-ms-input-placeholder {
     font-size: 30pt;
