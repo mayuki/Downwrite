@@ -67,6 +67,7 @@
             this._editingContentNode = element.querySelector('textarea');
             this._previewContentNode = element.querySelector('#preview-content');
             this._previewPaneNode = element.querySelector('#preview-pane');
+            this._editingContentNode.addEventListener('input', this._onEditingContentInput.bind(this));
             this._editingContentNode.addEventListener('keyup', this._onEditingContentKeyup.bind(this));
             this._editingContentNode.addEventListener('click', this._onEditingContentClick.bind(this));
             this._previewPaneNode.addEventListener('click', this._onPreviewPaneClick.bind(this));
@@ -336,8 +337,17 @@
         _onEditingContentClick: function (e) {
             this._appBar.hide();
         },
+        _onEditingContentInput: function (e) {
+            // update content & store to undo buffer
+            if (this._currentFile.content != this._editingContentNode.value) {
+                this._currentFile.content = this._editingContentNode.value;
+
+                // update status
+                this.queueUpdate();
+            }
+        },
         _onEditingContentKeyup: function (e) {
-            if (e.keyCode == 90 && e.ctrlKey) {
+                if (e.keyCode == 90 && e.ctrlKey) {
                 // Ctrl+Z: Undo
                 e.preventDefault();
                 e.stopPropagation();
@@ -358,6 +368,7 @@
                 e.stopPropagation();
                 this.togglePreview();
             } else {
+                /*
                 // update content & store to undo buffer
                 if (this._currentFile.content != this._editingContentNode.value) {
                     this._currentFile.content = this._editingContentNode.value;
@@ -365,6 +376,7 @@
                     // update status
                     this.queueUpdate();
                 }
+                */
             }
         },
 
