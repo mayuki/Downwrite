@@ -9,7 +9,7 @@ Screenshots
 
 ![Screenshot_02](https://github.com/mayuki/Downwrite/raw/master/Resources/Screenshot/screenshot_02.png)
 
-License （MIT License)
+License (MIT License)
 ------------------------
 Mayuki Sawatari <<mayuki@misuzilla.org>>
 
