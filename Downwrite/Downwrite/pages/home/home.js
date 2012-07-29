@@ -446,7 +446,7 @@
                 }.bind(this));
 
                 var addFromList = WinJS.UI.Animation.createAddToListAnimation(fileListItemNode, this._fileListNode.querySelectorAll('.win-template'));
-                this._fileListNode.insertAdjacentElement('afterBegin', fileListItemNode);
+                this._fileListNode.insertBefore(fileListItemNode, this._fileListNode.lastElementChild);
                 addFromList.execute();
 
             }.bind(this));
