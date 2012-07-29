@@ -7,6 +7,7 @@
         this._content = content || '';
         this._histories = [];
         this._temporaryName = "Untitled " + Downwrite.File._seqNum++;
+        this._isUnsaved = false;
 
         // line mode
         this.lineMode = this._content.match(/\r\n/) ? Downwrite.File.LineMode.CrLf
@@ -28,6 +29,15 @@
             this.notify('name', this.name);
         }.bind(this));
 
+        this.bind('content', function () {
+            var prevValue = this._isUnsaved;
+            this._isUnsaved = (this.originalContent != this._content);
+
+            if (this._isUnsaved != prevValue) {
+                this.notify('isUnsaved', this._isUnsaved, prevValue);
+            }
+        }.bind(this));
+
         this.updateCounts();
     }, {
         updateCounts: function () {
@@ -43,6 +53,7 @@
             },
             set: function (value) {
                 if (this._content != value) {
+                    var prevValue = this.content;
                     this._histories.push({
                         content: this.content,
                         lastChangedAt: this.lastChangedAt
@@ -51,6 +62,8 @@
 
                     this._content = value;
                     this.updateCounts();
+
+                    this.notify('content', value, prevValue);
                 }
             }
         },
@@ -67,10 +80,9 @@
         isNew: {
             get: function () { return !this.file; }
         },
+
         isUnsaved: {
-            get: function () {
-                return (this.originalContent != this._content);
-            }
+            get: function () { return this._isUnsaved; }
         },
 
         historyCount: {
@@ -89,11 +101,6 @@
             this.updateCounts();
 
             return true;
-        },
-
-        loadTempoarySavedContent: function () {
-            /// <summary></summary>
-
         },
 
         save: function () {
@@ -148,7 +155,7 @@
     });
     WinJS.Class.mix(Downwrite_File,
         WinJS.Binding.mixin,
-        WinJS.Binding.expandProperties({ isSelected: false, lineCount: 0, wordsCount: 0, charsCount: 0 })
+        WinJS.Binding.expandProperties({ isSelected: false, lineCount: 0, wordsCount: 0, charsCount: 0, originalContent: '' })
     );
 
 

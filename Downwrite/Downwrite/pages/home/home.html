@@ -17,7 +17,9 @@
         var valueToClass = WinJS.Binding.converter(function (value) {
             return 'val-' + value.toString();
         });
-        valueToClass.supportedForProcessing = true;
+        var booleanToDisplayInline = WinJS.Binding.converter(function (value) {
+            return value ? 'inline' : 'none';
+        });
     </script>
 </head>
 <body>
@@ -30,7 +32,7 @@
 
             <div data-win-control="WinJS.Binding.Template" id="template-filelist-item">
                 <div data-downwrite-filelist-item-is-selected data-win-bind="className: isSelected valueToClass">
-                    <div class="filelist-item"><a class="filelist-item-name" href="#" data-win-bind="textContent:name">RamRaisin.md</a> <a class="filelist-item-close" href="#">&#xE0C7;</a></div>
+                    <div class="filelist-item"><a class="filelist-item-name" href="#"><span data-win-bind="style.display:isUnsaved booleanToDisplayInline">&#xE0D8; </span><span data-win-bind="textContent:name">RamRaisin.md</a> <a class="filelist-item-close" href="#">&#xE0C7;</a></div>
                 </div>
             <!-- /template-filelist-item --></div>
         <!-- /filelist-container --></div>
