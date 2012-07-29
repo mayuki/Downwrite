@@ -29,14 +29,17 @@
             this.notify('name', this.name);
         }.bind(this));
 
-        this.bind('content', function () {
+        var updateIsUnsaved = function () {
             var prevValue = this._isUnsaved;
             this._isUnsaved = (this.originalContent != this._content);
 
             if (this._isUnsaved != prevValue) {
                 this.notify('isUnsaved', this._isUnsaved, prevValue);
             }
-        }.bind(this));
+        }.bind(this);
+
+        this.bind('content', updateIsUnsaved);
+        this.bind('originalContent', updateIsUnsaved);
 
         this.updateCounts();
     }, {
@@ -113,7 +116,10 @@
             }
 
             return Windows.Storage.FileIO.writeTextAsync(this.file, content)
-                                         .then(function () { this.originalContent = this.content; return WinJS.Promise.wrap(); }.bind(this)); // update original
+                                         .then(function () {
+                                             this.originalContent = this.content;
+                                             return WinJS.Promise.timeout(0);
+                                         }.bind(this)); // update original
         },
         
         saveAs: function (file) {
