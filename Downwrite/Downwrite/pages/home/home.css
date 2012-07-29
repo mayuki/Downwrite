@@ -34,6 +34,7 @@
     display: none;
     border-left: 1px solid #000;
     background-color: #fff;
+    overflow: auto;
 }
 .homepage section[role=main] #preview-pane header {
     -ms-grid-column: 2;
