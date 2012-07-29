@@ -23,6 +23,7 @@
         <Extension Category="windows.fileTypeAssociation">
           <FileTypeAssociation Name="markdown">
             <DisplayName>Markdown Document</DisplayName>
+            <Logo>images\file.png</Logo>
             <SupportedFileTypes>
               <FileType>.md</FileType>
               <FileType>.markdown</FileType>
