@@ -27,7 +27,7 @@
             this.initializeComponents(element);
 
             this.prepareAppBar();
-            this.togglePreview(false);
+            this.togglePreview(Downwrite.Setting.current.isPreviewVisible);
             this.setSharingContract();
 
             // events
@@ -75,6 +75,8 @@
             // databind
             Downwrite.OpenedFiles.addEventListener('iteminserted', this._onItemInserted.bind(this));
             Downwrite.OpenedFiles.addEventListener('itemremoved', this._onItemRemoved.bind(this));
+
+            Downwrite.Setting.current.bind('fontSize', this._onFontSizeChanged.bind(this));
         },
 
         setSharingContract: function () {
@@ -107,9 +109,13 @@
 
 
         togglePreview: function (isVisible) {
-            if (isVisible == undefined) isVisible = !this._isPreviewVisible;
+            if (isVisible == undefined) {
+                isVisible = !this._isPreviewVisible;
+            }
 
             this._isPreviewVisible = isVisible;
+            Downwrite.Setting.current.isPreviewVisible = this._isPreviewVisible;
+
             this._appBar.getCommandById('cmdPreview').selected = isVisible;
 
             var editPane = this._fragmentNode.querySelector('#edit-pane');
@@ -438,6 +444,10 @@
 
                 request.data = dataPackage;
             }
+        },
+
+        _onFontSizeChanged: function (newValue, oldValue) {
+            this._editingContentNode.style.fontSize = newValue + 'pt';
         }
     });
 })();

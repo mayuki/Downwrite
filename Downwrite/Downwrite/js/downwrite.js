@@ -152,8 +152,53 @@
     );
 
 
+    var Downwrite_Setting = WinJS.Class.define(function () {
+        this._initObservable();
+
+        // default values
+        this.isPreviewVisible = true;
+        this.fontSize = 20;
+
+        // set bind
+        ['isPreviewVisible', 'fontSize'].forEach(function (propName) {
+            this._loadPropertyFromAppData(propName);
+            this._setSaveActionForProperty(propName);
+        }.bind(this));
+    }, {
+        // instance members
+        /// <field name="isPreviewVisible" type="Boolean"></field>
+        isPreviewVisible: true,
+
+        /// <field name="fontSize" type="Number"></field>
+        fontSize: 20,
+
+        // private instance members
+        _loadPropertyFromAppData: function (propName, defaultValue) {
+            var appData = Windows.Storage.ApplicationData.current;
+            defaultValue = (defaultValue || this[propName]);
+            var value = JSON.parse(appData.localSettings.values[propName] || 'null');
+            this[propName] = (value != null ? value : defaultValue);
+        },
+        _setSaveActionForProperty: function (propName) {
+            this.bind(propName, function () {
+                var appData = Windows.Storage.ApplicationData.current;
+                appData.localSettings.values[propName] = JSON.stringify(this[propName]);
+                appData.signalDataChanged();
+            }.bind(this));
+        }
+    }, {
+        /// <field name="current" type="Downwrite.Setting" />
+        current: null
+    });
+    WinJS.Class.mix(Downwrite_Setting,
+        WinJS.Binding.mixin,
+        WinJS.Binding.expandProperties({ isPreviewVisible: true, fontSize: 0 })
+    );
+
     WinJS.Namespace.define("Downwrite", {
         MainPage: null,
+
+        Setting: Downwrite_Setting,
 
         File: Downwrite_File,
         OpenedFiles: new WinJS.Binding.List([]),
@@ -178,4 +223,5 @@
         }
     });
 
+    Downwrite.Setting.current = new Downwrite.Setting();
 })();

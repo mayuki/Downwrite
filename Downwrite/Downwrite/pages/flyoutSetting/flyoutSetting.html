@@ -1,0 +1,51 @@
+﻿<!DOCTYPE html>
+<html>
+    <head>
+        <title>flyoutSetting</title>
+        <style>
+            .flyout-setting input[type=range]::-ms-ticks-before
+            {
+                display: block;
+                color: rgb(150, 150, 150);
+                height: 8px;
+                padding-bottom: 5px;
+            }
+        </style>
+        <script>
+            WinJS.Namespace.define('Downwrite.Flyout.Setting', {
+                onbeforeshow: function () {
+                    // Binding: font size
+                    var fontSizeCurrentNode = document.querySelector('.flyout-setting #fontSizeCurrent');
+                    var fontSizeRangeNode = document.querySelector('.flyout-setting #fontSizeRange');
+                    fontSizeCurrentNode.textContent = fontSizeRangeNode.value = Downwrite.Setting.current.fontSize;
+                    fontSizeRangeNode.addEventListener('change', function () {
+                        Downwrite.Setting.current.fontSize = fontSizeCurrentNode.textContent = fontSizeRangeNode.value;
+                    });
+                }
+            });
+            Downwrite.Flyout.Setting.onbeforeshow.supportedForProcessing = true;
+        </script>
+    </head>
+    <body>
+        <div data-win-control="WinJS.UI.SettingsFlyout"
+             class="flyout-setting"
+             aria-label="Setting"
+             data-win-options="{
+                                settingsCommandId:'Setting',
+                                width:'narrow',
+                                onbeforeshow:Downwrite.Flyout.Setting.onbeforeshow,
+                               }">
+            <div class="win-ui-dark win-header">
+               <button type="button" onclick="WinJS.UI.SettingsFlyout.show()" class="win-backbutton"></button>
+               <div class="win-label">Setting</div>
+            </div>                
+            <div class="win-content">
+                <div class="win-settings-section">
+                    <h3>Editor Font Size</h3>
+                    <input type="range" id="fontSizeRange" min="6" max="72" step="1" />
+                    <p>Current: <span id="fontSizeCurrent">20</span>pt</p>
+                <!-- /win-settings-section --></div>
+            </div>
+        </div>
+    </body>
+</html>
