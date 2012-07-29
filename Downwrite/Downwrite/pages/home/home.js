@@ -347,7 +347,7 @@
             }
         },
         _onEditingContentKeyup: function (e) {
-                if (e.keyCode == 90 && e.ctrlKey) {
+            if (e.keyCode == 90 && e.ctrlKey) {
                 // Ctrl+Z: Undo
                 e.preventDefault();
                 e.stopPropagation();
@@ -367,16 +367,6 @@
                 e.preventDefault();
                 e.stopPropagation();
                 this.togglePreview();
-            } else {
-                /*
-                // update content & store to undo buffer
-                if (this._currentFile.content != this._editingContentNode.value) {
-                    this._currentFile.content = this._editingContentNode.value;
-
-                    // update status
-                    this.queueUpdate();
-                }
-                */
             }
         },
 
