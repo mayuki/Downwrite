@@ -488,6 +488,14 @@
 
         _onFontSizeChanged: function (newValue, oldValue) {
             this._editingContentNode.style.fontSize = newValue + 'pt';
+
+            // WORKAROUND: (RP) Force recalc line-height
+            var origPaddingRight = this._editingContentNode.currentStyle.paddingRight;
+            this._editingContentNode.style.paddingRight = (parseInt(origPaddingRight, 10) + 1) + 'px';
+            WinJS.Promise.timeout(100)
+                            .then(function () {
+                                this._editingContentNode.style.paddingRight = '';
+                            }.bind(this));
         }
     });
 })();
