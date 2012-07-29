@@ -429,8 +429,6 @@
 
         _onDataRequested: function (e) {
             var request = e.request;
-            var fragmentNode = document.createElement('div');
-            fragmentNode.innerHTML = this._currentFile.toHTML();
             var dataPackage = new Windows.ApplicationModel.DataTransfer.DataPackage();
             var htmlFormat = Windows.ApplicationModel.DataTransfer.HtmlFormatHelper.createHtmlFormat(this._currentFile.toHTML());
 
