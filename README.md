@@ -1,5 +1,5 @@
 Downwrite
-=========
+=======
 
 Markdown Editor for Metro style apps
 
@@ -8,6 +8,8 @@ Screenshots
 ![Screenshot_01](https://github.com/mayuki/Downwrite/raw/master/Resources/Screenshot/screenshot_01.png)
 
 ![Screenshot_02](https://github.com/mayuki/Downwrite/raw/master/Resources/Screenshot/screenshot_02.png)
+
+![Screenshot_03](https://github.com/mayuki/Downwrite/raw/master/Resources/Screenshot/screenshot_03.png)
 
 License (MIT License)
 ------------------------
