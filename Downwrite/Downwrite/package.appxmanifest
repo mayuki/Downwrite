@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest">
-  <Identity Name="Misuzilla.Downwrite" Version="1.0.0.0" Publisher="CN=Tomoyo" />
+  <Identity Name="Misuzilla.Downwrite" Version="1.0.0.1" Publisher="CN=Tomoyo" />
   <Properties>
     <DisplayName>Downwrite</DisplayName>
     <PublisherDisplayName>Mayuki Sawatari</PublisherDisplayName>
