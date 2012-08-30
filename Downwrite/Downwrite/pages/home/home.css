@@ -30,6 +30,15 @@
     font-family: 'Segoe UI Light';
     color: #c0c0c0;
 }
+.homepage section[role=main] .placeholder-text {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    font-size: 30pt;
+    font-family: 'Segoe UI Light';
+    color: #c0c0c0;
+    cursor: text;
+}
 .homepage section[role=main] #preview-pane {
     -ms-grid-column: 2;
     display: none;

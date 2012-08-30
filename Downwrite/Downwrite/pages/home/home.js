@@ -73,6 +73,11 @@
             this._previewPaneNode.addEventListener('click', this._onPreviewPaneClick.bind(this));
             this._editingContentNode.value = ''; // WORKAROUND: (Win8RP)なぜかplaceholderの値が入ってしまうので消す…。
 
+            // placeholder
+            document.querySelector('.placeholder-text').addEventListener('click', function () {
+                this._editingContentNode.focus();
+            }.bind(this));
+
             // databind
             Downwrite.OpenedFiles.addEventListener('iteminserted', this._onItemInserted.bind(this));
             Downwrite.OpenedFiles.addEventListener('itemremoved', this._onItemRemoved.bind(this));
@@ -369,6 +374,9 @@
             // update content & store to undo buffer
             if (this._currentFile.content != this._editingContentNode.value) {
                 this._currentFile.content = this._editingContentNode.value;
+
+                // placeholder
+                document.querySelector('.placeholder-text').style.display = (this._editingContentNode.value != "") ? 'none' : 'block';
 
                 // update status
                 this.queueUpdate();

@@ -30,14 +30,15 @@
             <!-- /filelist --></div>
 
             <div data-win-control="WinJS.Binding.Template" id="template-filelist-item">
-                <div data-downwrite-filelist-item-is-selected data-win-bind="className: isSelected valueToClass">
+                <div data-downwrite-filelist-item-is-selected="" data-win-bind="className: isSelected valueToClass">
                     <div class="filelist-item"><a class="filelist-item-name" href="#"><span data-win-bind="style.display:isUnsaved booleanToDisplayInline">&#xE0D8; </span><span data-win-bind="textContent:name">RamRaisin.md</a> <a class="filelist-item-close" href="#">&#xE0C7;</a></div>
                 </div>
             <!-- /template-filelist-item --></div>
         <!-- /filelist-container --></div>
         <section aria-label="Main content" role="main">
             <div id="edit-pane">
-                <textarea id="editing-content" placeholder="Tap &amp; Type your text!"></textarea>                
+                <textarea id="editing-content" placeholder=""></textarea>   
+                <span class="placeholder-text">Tap &amp; Type your text!</span>             
             <!-- /edit-pane --></div>
 
             <div id="preview-pane">
