@@ -102,6 +102,7 @@
     background-color: #000;
     color: #fff;
     display: none;
+    z-index: 10;
 }
 .homepage #filelist div {
     display: inline;

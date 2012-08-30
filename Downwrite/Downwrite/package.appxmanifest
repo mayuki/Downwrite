@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest">
-  <Identity Name="3061MayukiSawatari.Downwrite" Version="1.0.0.2" Publisher="CN=2AC3191A-81F6-4742-95EE-5362E43F093E" />
+  <Identity Name="3061MayukiSawatari.Downwrite" Version="1.0.0.3" Publisher="CN=2AC3191A-81F6-4742-95EE-5362E43F093E" />
   <Properties>
     <DisplayName>Downwrite</DisplayName>
     <PublisherDisplayName>Mayuki Sawatari</PublisherDisplayName>
