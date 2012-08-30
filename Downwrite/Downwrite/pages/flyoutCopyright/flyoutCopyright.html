@@ -1,0 +1,55 @@
+﻿<!DOCTYPE html>
+<html>
+    <head>
+        <title>flyoutCopyright</title>
+        <style>
+            .flyout-copyright pre {
+                border-top: 1px solid #c0c0c0;
+                border-bottom: 1px solid #c0c0c0;
+                background-color: #f0f0f0;
+                -ms-word-break: break-all;
+                white-space: pre-wrap;
+            }
+        </style>
+    </head>
+    <body>
+        <div data-win-control="WinJS.UI.SettingsFlyout"
+             class="flyout-copyright"
+             aria-label="Copyright"
+             data-win-options="{
+                                settingsCommandId:'Copyright',
+                                width:'narrow',
+                               }">
+            <div class="win-ui-dark win-header">
+               <button type="button" onclick="WinJS.UI.SettingsFlyout.show()" class="win-backbutton"></button>
+               <div class="win-label">Copyright</div>
+            </div>                
+            <div class="win-content">
+                <div class="win-settings-section">
+                    <h3><a href="https://github.com/mayuki/Downwrite">Downwrite</a></h3>
+                    <pre>Mayuki Sawatari &lt;mayuki@misuzilla.org&gt;
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+</pre>
+                    <h3><a href="https://github.com/evilstreak/markdown-js/">markdown-js</a></h3>
+                    <pre>Released under MIT license
+
+Copyright (c) 2009-2010 Dominic Baggott
+Copyright (c) 2009-2010 Ash Berlin
+Copyright (c) 2011 Christoph Dorn &lt;christoph@christophdorn.com&gt; (http://www.christophdorn.com)
+</pre>
+                    
+                    <h3><a href="https://github.com/clownfart/Markdown-CSS">Markdown-CSS</a></h3>
+                    <pre>Unlicense
+
+SIMON LAROCHE
+</pre>
+                    <!-- /win-settings-section --></div>
+            </div>
+        </div>
+    </body>
+</html>

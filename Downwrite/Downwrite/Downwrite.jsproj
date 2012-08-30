@@ -44,14 +44,16 @@
     <TargetPlatformIdentifier>Windows</TargetPlatformIdentifier>
     <TargetPlatformVersion>8.0</TargetPlatformVersion>
     <DefaultLanguage>en-US</DefaultLanguage>
-    <PackageCertificateKeyFile>Downwrite_TemporaryKey.pfx</PackageCertificateKeyFile>
+    <PackageCertificateKeyFile>Downwrite_StoreKey.pfx</PackageCertificateKeyFile>
     <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
+    <PackageCertificateThumbprint>1E5D6B86A0B4B15B27BE7E13D1FC19701E27FB40</PackageCertificateThumbprint>
   </PropertyGroup>
   <ItemGroup>
     <AppxManifest Include="package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
     <Content Include="css\default.css" />
+    <None Include="Downwrite_StoreKey.pfx" />
     <Content Include="images\file.png" />
     <Content Include="images\logo.png" />
     <Content Include="images\smalllogo.png" />
@@ -61,6 +63,8 @@
     <Content Include="js\downwrite.js" />
     <Content Include="js\markdown.js" />
     <Content Include="js\navigator.js" />
+    <None Include="Package.StoreAssociation.xml" />
+    <Content Include="pages\flyoutCopyright\flyoutCopyright.html" />
     <Content Include="pages\flyoutSetting\flyoutSetting.html" />
     <Content Include="pages\flyoutHelp\flyoutHelp.html" />
     <Content Include="pages\home\home.css" />
