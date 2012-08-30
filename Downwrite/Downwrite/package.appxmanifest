@@ -15,7 +15,7 @@
   </Resources>
   <Applications>
     <Application Id="App" StartPage="default.html">
-      <VisualElements DisplayName="Downwrite" Logo="images\logo.png" SmallLogo="images\smalllogo.png" Description="Markdown Editor for Metro style apps" ForegroundText="light" BackgroundColor="#464646">
+      <VisualElements DisplayName="Downwrite" Logo="images\logo.png" SmallLogo="images\smalllogo.png" Description="Markdown Editor for Metro style apps" ForegroundText="light" BackgroundColor="#000000">
         <DefaultTile ShowName="allLogos" />
         <SplashScreen Image="images\splashscreen.png" />
       </VisualElements>
