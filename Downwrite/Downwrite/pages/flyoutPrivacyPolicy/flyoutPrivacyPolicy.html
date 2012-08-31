@@ -1,0 +1,43 @@
+﻿<!DOCTYPE html>
+<html>
+    <head>
+        <title>flyoutPrivacyPolicy</title>
+        <style>
+            .flyout-privacypolicy pre {
+                border-top: 1px solid #c0c0c0;
+                border-bottom: 1px solid #c0c0c0;
+                background-color: #f0f0f0;
+                -ms-word-break: break-all;
+                white-space: pre-wrap;
+            }
+        </style>
+    </head>
+    <body>
+        <div data-win-control="WinJS.UI.SettingsFlyout"
+             class="flyout-privacypolicy"
+             aria-label="Privacy Policy"
+             data-win-options="{
+                                settingsCommandId:'PrivacyPolicy',
+                                width:'narrow',
+                               }">
+            <div class="win-ui-dark win-header">
+               <button type="button" onclick="WinJS.UI.SettingsFlyout.show()" class="win-backbutton"></button>
+               <div class="win-label">Privacy Policy</div>
+            </div>                
+            <div class="win-content">
+                <div class="win-settings-section">
+                    <ul>
+                        <li>Downwrite *DO NOT* collect and send any privacy information (Microsoft Account, system information, etc...)
+                        <li>Downwrite read and write a file on your computer.
+                        <ul>
+                            <li>Downwrite *CAN* read and write a your selected file only.
+                            <li>Downwirte *CAN NOT* read and write without your permission.
+                            <li>Downwrite *DO NOT* send and share your file without your permission.
+                        </ul>
+                    </ul>
+                    <p>Mayuki Sawatari &lt;mayuki@misuzilla.org&gt;</p>
+                    <!-- /win-settings-section --></div>
+            </div>
+        </div>
+    </body>
+</html>

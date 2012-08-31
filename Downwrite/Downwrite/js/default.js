@@ -102,9 +102,10 @@
 
     app.onsettings = function (e) {
         e.detail.applicationcommands = {
-            "Setting"  : { title: "Setting", href: "/pages/flyoutSetting/flyoutSetting.html" },
-            "Help"     : { title: "Markdown Syntax", href: "/pages/flyoutHelp/flyoutHelp.html" },
-            "Copyright": { title: "Copyright", href: "/pages/flyoutCopyright/flyoutCopyright.html" },
+            "Setting"      : { title: "Setting", href: "/pages/flyoutSetting/flyoutSetting.html" },
+            "Help"         : { title: "Markdown Syntax", href: "/pages/flyoutHelp/flyoutHelp.html" },
+            "Copyright"    : { title: "Copyright", href: "/pages/flyoutCopyright/flyoutCopyright.html" },
+            "PrivacyPolicy": { title: "Privacy Policy", href: "/pages/flyoutPrivacyPolicy/flyoutPrivacyPolicy.html" },
         };
         WinJS.UI.SettingsFlyout.populateSettings(e);
     }

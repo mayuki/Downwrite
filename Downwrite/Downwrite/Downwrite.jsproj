@@ -64,6 +64,7 @@
     <Content Include="js\markdown.js" />
     <Content Include="js\navigator.js" />
     <None Include="Package.StoreAssociation.xml" />
+    <Content Include="pages\flyoutPrivacyPolicy\flyoutPrivacyPolicy.html" />
     <Content Include="pages\flyoutCopyright\flyoutCopyright.html" />
     <Content Include="pages\flyoutSetting\flyoutSetting.html" />
     <Content Include="pages\flyoutHelp\flyoutHelp.html" />

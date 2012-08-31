@@ -192,7 +192,9 @@
         updatePreview: function () {
             this._previewContentNode.innerHTML = this._currentFile.toHTML();
         },
-
+        updatePlaceholder: function () {
+            document.querySelector('.placeholder-text').style.display = (this._editingContentNode.value != "") ? 'none' : 'block';
+        },
         showFile: function (file) {
             if (this._currentFile) {
                 this._currentFile.isSelected = false;
@@ -203,6 +205,7 @@
             this._editingContentNode.value = file.content;
             this.updatePreview();
             this.updateStatusBar();
+            this.updatePlaceholder();
         },
 
         openFile: function (file) {
@@ -376,7 +379,7 @@
                 this._currentFile.content = this._editingContentNode.value;
 
                 // placeholder
-                document.querySelector('.placeholder-text').style.display = (this._editingContentNode.value != "") ? 'none' : 'block';
+                this.updatePlaceholder();
 
                 // update status
                 this.queueUpdate();
